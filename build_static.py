@@ -65,7 +65,7 @@ q.addEventListener("input",()=>{
 
 
 def check_source(entry):
-    assert re.fullmatch(r"[a-z0-9-]{2,32}", entry["id"])
+    assert re.fullmatch(r"[a-z0-9-]{2,63}", entry["id"])
     assert re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", entry["repo"])
     assert re.fullmatch(r"[A-Za-z0-9_.-]+", entry["tag"])
     assert re.fullmatch(r"[A-Za-z0-9_.-]+", entry["asset"])
