@@ -60,3 +60,6 @@ nhddl|NHDDL|Utilitarios|Launcher Neutrino; REQUER Neutrino instalado|v1.2.2|3677
 neutrino|Neutrino|Utilitarios|Game loader EE; REQUER componentes e configuracao|latest|75252|b6a3e13e00ebc4257ad0c97a9106273f8c4cfafa42a63edc25d491cca596b626
 wlaunchelf-ds4|wLaunchELF DS34 (compat)|Ferramentas|Compatibilidade com as primeiras versoes da MAIZO Store|latest|366868|4ed8eb48b735411356012946082d2d61d1f72a1aad613cb6d1f5e65953187df2
 wlaunchelf-exfat|wLaunchELF exFAT (compat)|Ferramentas|Compatibilidade com as primeiras versoes da MAIZO Store|latest|356052|2254d5684904d42088421fc6ef6cf46299faa8c85e5764a3789de7108180a6d7
+sms|SMS Media Player|Multimidia|Player de video e audio PS2|2.9rev4|784861|d8bbbb2ffadc712bbb8074b8009a854c2b83d59d3cae1f9770a38c7d56e435a6
+hdl-installer|HDL Game Installer|Utilitarios|Instalador HDL para HDD|latest|1931864|fb77cab3a97389e8ce074cd0adb30e601b59863f86ed5779d3b05ac5346b7bef
+cheatdevice-exfat|CheatDevice exFAT|Ferramentas|Cheats. Pode REQUER banco de codigos externo|latest|449204|258df8b205de415a095cdb90ea70234903b9bf486b484267ff8a091d5d29c914
