@@ -16,6 +16,9 @@ import hashlib
 import json
 import re
 import sys
+import subprocess
+import tempfile
+import zipfile
 
 ROOT = Path("site")
 CATALOG = Path("catalog_sources.json")
@@ -69,8 +72,9 @@ def check_source(entry):
     assert re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", entry["repo"])
     assert re.fullmatch(r"[A-Za-z0-9_.-]+", entry["tag"])
     assert re.fullmatch(r"[A-Za-z0-9_.-]+", entry["asset"])
-    assert entry["asset"].lower().endswith(".elf")
-    assert 64 <= entry["size"] <= MAX_ELF
+    assert entry["asset"].lower().endswith((".elf", ".zip", ".7z"))
+    assert 64 <= entry["size"] <= 24 * 1024 * 1024
+    assert re.fullmatch(r"[a-z0-9._-]+", entry.get("preferred_elf", "main"))
     assert not any("|" in str(entry[k]) or "\n" in str(entry[k])
                    for k in ("id", "title", "category", "summary", "tag"))
     digest = entry.get("sha256")
@@ -82,34 +86,99 @@ def github_url(item):
         item["repo"], quote(item["tag"], safe=""), quote(item["asset"], safe=""))
 
 
+def choose_archive_elf(names, preferred):
+    """Only a single unambiguous MIPS ELF can be selected."""
+    choices = [n for n in names if n.lower().endswith(".elf") and
+               not n.startswith("/") and ".." not in n.split("/") and
+               "\\" not in n]
+    if preferred:
+        prefer = [n for n in choices if preferred.lower() in Path(n).name.lower()]
+        if prefer:
+            choices = prefer
+    if len(choices) != 1:
+        raise ValueError("Archive contains %d ambiguous ELF files" % len(choices))
+    return choices[0]
+
+
+def unpack_release(archive, name, preferred, output):
+    if name.lower().endswith(".zip"):
+        with zipfile.ZipFile(archive) as z:
+            choices = [i.filename for i in z.infolist()
+                       if not i.is_dir() and i.filename.lower().endswith(".elf") and
+                       64 <= i.file_size <= MAX_ELF]
+            selected = choose_archive_elf(choices, preferred)
+            with z.open(selected) as src, output.open("wb") as dst:
+                while chunk := src.read(CHUNK):
+                    dst.write(chunk)
+                    if dst.tell() > MAX_ELF:
+                        raise ValueError("Decompression exceeds 12 MiB")
+        return
+    if not name.lower().endswith(".7z"):
+        raise ValueError("Unknown compressed asset")
+    listed = subprocess.run(["7z", "l", "-slt", str(archive)],
+                            capture_output=True, text=True, timeout=40, check=True)
+    chunks = listed.stdout.split("\n\n")
+    names = []
+    for chunk in chunks:
+        data = dict(line.split(" = ", 1) for line in chunk.splitlines() if " = " in line)
+        path = data.get("Path")
+        if path and path.lower().endswith(".elf") and
+                int(data.get("Size", "0")) <= MAX_ELF:
+            names.append(path)
+    selected = choose_archive_elf(names, preferred)
+    with subprocess.Popen(["7z", "e", "-so", str(archive), selected],
+                          stdout=subprocess.PIPE, stderr=subprocess.DEVNULL) as p:
+        with output.open("wb") as dst:
+            while chunk := p.stdout.read(CHUNK):
+                dst.write(chunk)
+                if dst.tell() > MAX_ELF:
+                    p.kill()
+                    raise ValueError("7z decompression exceeds 12 MiB")
+        if p.wait(timeout=40):
+            raise ValueError("7z ELF extraction failed")
+
+
 def copy_verified_elf(item):
     url = github_url(item)
     dest = ROOT / "v1" / "apps" / (item["id"] + ".elf")
     dest.parent.mkdir(parents=True, exist_ok=True)
-    digest, size = hashlib.sha256(), 0
-    req = Request(url, headers={"User-Agent": "MaizoStore-GitHubBuild/2"})
-    with urlopen(req, timeout=70) as response, dest.open("wb") as out:
-        while True:
-            chunk = response.read(CHUNK)
-            if not chunk:
-                break
-            size += len(chunk)
-            if size > item["size"] or size > MAX_ELF:
-                raise ValueError("Asset size exceeds pinned length")
-            digest.update(chunk)
-            out.write(chunk)
-    actual = digest.hexdigest()
-    if size != item["size"] or (item.get("sha256") and item["sha256"] != actual):
-        dest.unlink(missing_ok=True)
-        raise ValueError("Size/SHA-256 changed upstream")
-    with dest.open("rb") as stream:
-        header = stream.read(20)
-    if (len(header) < 20 or header[:4] != b"\x7fELF" or
-            header[4] != 1 or header[5] != 1 or
-            int.from_bytes(header[18:20], "little") != 8):
-        dest.unlink(missing_ok=True)
-        raise ValueError("ELF is not a 32-bit little-endian MIPS executable")
-    return actual, size
+    archived = item["asset"].lower().endswith((".zip", ".7z"))
+    with tempfile.TemporaryDirectory() as work:
+        downloaded = Path(work) / ("asset" + Path(item["asset"]).suffix)
+        download = downloaded if archived else dest
+        digest, size = hashlib.sha256(), 0
+        req = Request(url, headers={"User-Agent": "MaizoStore-GitHubBuild/3"})
+        with urlopen(req, timeout=80) as response, download.open("wb") as out:
+            while chunk := response.read(CHUNK):
+                size += len(chunk)
+                if size > item["size"] or size > 24 * 1024 * 1024:
+                    raise ValueError("Asset size exceeds pinned length")
+                digest.update(chunk)
+                out.write(chunk)
+        if size != item["size"] or (item.get("sha256") and
+                                     item["sha256"] != digest.hexdigest()):
+            dest.unlink(missing_ok=True)
+            raise ValueError("Source archive size/SHA-256 changed upstream")
+        if archived:
+            unpack_release(downloaded, item["asset"], item.get("preferred_elf"), dest)
+
+    sha, length = hashlib.sha256(), 0
+    with dest.open("rb") as src:
+        header = src.read(20)
+        if (len(header) < 20 or header[:4] != b"\x7fELF" or
+                header[4] != 1 or header[5] != 1 or
+                int.from_bytes(header[18:20], "little") != 8):
+            dest.unlink(missing_ok=True)
+            raise ValueError("Not a 32-bit little-endian MIPS ELF")
+        sha.update(header)
+        length = len(header)
+        while chunk := src.read(CHUNK):
+            length += len(chunk)
+            if length > MAX_ELF:
+                dest.unlink(missing_ok=True)
+                raise ValueError("Unpacked ELF exceeds max size")
+            sha.update(chunk)
+    return sha.hexdigest(), length
 
 
 def build():
