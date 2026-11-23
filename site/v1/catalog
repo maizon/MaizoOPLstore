@@ -58,3 +58,5 @@ quake-ps2|Quake PS2|Jogos|Engine open-source. REQUER arquivos PAK legais|v1.2.0|
 quake2-ps2|Quake II PS2|Jogos|Engine GPL. REQUER arquivos PAK legais|v3.23|1887232|5630d47dd1ec0cdec223302e83b62860e1f572f5440336f207f93640847fe32b
 nhddl|NHDDL|Utilitarios|Launcher Neutrino; REQUER Neutrino instalado|v1.2.2|367700|64408e7089918d4d0c7ce6366ca2dc82357b446216b95215d54609284668451d
 neutrino|Neutrino|Utilitarios|Game loader EE; REQUER componentes e configuracao|latest|75252|b6a3e13e00ebc4257ad0c97a9106273f8c4cfafa42a63edc25d491cca596b626
+wlaunchelf-ds4|wLaunchELF DS34 (compat)|Ferramentas|Compatibilidade com as primeiras versoes da MAIZO Store|latest|366868|4ed8eb48b735411356012946082d2d61d1f72a1aad613cb6d1f5e65953187df2
+wlaunchelf-exfat|wLaunchELF exFAT (compat)|Ferramentas|Compatibilidade com as primeiras versoes da MAIZO Store|latest|356052|2254d5684904d42088421fc6ef6cf46299faa8c85e5764a3789de7108180a6d7
