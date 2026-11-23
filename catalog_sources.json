@@ -899,6 +899,34 @@
       "sha256": "29ea630261675bfd87eca0acf056b6b02a299b2e1d067ef77c19e1d4e46ba2c7",
       "redistribute": true,
       "format": "7z"
+    },
+    {
+      "id": "wlaunchelf-ds4",
+      "title": "wLaunchELF DS34 (compat)",
+      "category": "Ferramentas",
+      "summary": "Compatibilidade com as primeiras versoes da MAIZO Store",
+      "credits": "El_Isra / wLaunchELF Team",
+      "license": "AFL-2.0 (origem)",
+      "repo": "israpps/wLaunchELF_ISR",
+      "tag": "latest",
+      "asset": "BOOT-DS34.ELF",
+      "size": 366868,
+      "sha256": "4ed8eb48b735411356012946082d2d61d1f72a1aad613cb6d1f5e65953187df2",
+      "redistribute": true
+    },
+    {
+      "id": "wlaunchelf-exfat",
+      "title": "wLaunchELF exFAT (compat)",
+      "category": "Ferramentas",
+      "summary": "Compatibilidade com as primeiras versoes da MAIZO Store",
+      "credits": "El_Isra / wLaunchELF Team",
+      "license": "AFL-2.0 (origem)",
+      "repo": "israpps/wLaunchELF_ISR",
+      "tag": "latest",
+      "asset": "BOOT-EXFAT.ELF",
+      "size": 356052,
+      "sha256": "2254d5684904d42088421fc6ef6cf46299faa8c85e5764a3789de7108180a6d7",
+      "redistribute": true
     }
   ]
 }
