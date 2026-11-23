@@ -1,15 +1,6 @@
 {
   "sources": 63,
-  "verified_mirror": 57,
+  "verified_mirror": 59,
   "external_only": 4,
-  "errors": [
-    [
-      "quake-ps2",
-      "Archive contains 2 ambiguous ELFs: q1ps2_release_1.2.0/quake_disc.elf,q1ps2_release_1.2.0/quake.elf"
-    ],
-    [
-      "quake2-ps2",
-      "Archive contains 2 ambiguous ELFs: q2ps2_release_3.23/quake2.elf,q2ps2_release_3.23/quake2_disc.elf"
-    ]
-  ]
+  "errors": []
 }

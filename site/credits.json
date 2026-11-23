@@ -1140,16 +1140,16 @@
       "summary": "Engine open-source. REQUER arquivos PAK legais",
       "credits": "glampert / id Software Quake GPL engine",
       "license": "GPL-2.0",
-      "preferred_elf": "quake",
+      "preferred_elf": "quake.elf",
       "size": 1172920,
       "sha256": "38d94c58c21b07efa47b53886de4a58b4901a8bc302bb6dc125335abde256558",
       "redistribute": true,
       "format": "zip",
       "source": "https://github.com/glampert/quake-ps2/releases/download/v1.2.0/q1ps2_release_1.2.0.zip",
       "project": "https://github.com/glampert/quake-ps2",
-      "status": "unavailable",
-      "verified_sha256": null,
-      "verified_bytes": 0
+      "status": "available",
+      "verified_sha256": "2cb9ef6b5d8e3d56a1e4ca5a5027d8a4f6cc8de12dc60bc12b5e5d900689e9b4",
+      "verified_bytes": 1411968
     },
     {
       "repo": "glampert/quake2-ps2",
@@ -1161,16 +1161,16 @@
       "summary": "Engine GPL. REQUER arquivos PAK legais",
       "credits": "glampert / id Software Quake II GPL engine",
       "license": "GPL-2.0",
-      "preferred_elf": "quake",
+      "preferred_elf": "quake2.elf",
       "size": 1481988,
       "sha256": "303a055ea73bda3cc8697eef1f22d5ad9c3f4f8e1df983501d9a112ba1efb73d",
       "redistribute": true,
       "format": "zip",
       "source": "https://github.com/glampert/quake2-ps2/releases/download/v3.23/q2ps2_release_3.23.zip",
       "project": "https://github.com/glampert/quake2-ps2",
-      "status": "unavailable",
-      "verified_sha256": null,
-      "verified_bytes": 0
+      "status": "available",
+      "verified_sha256": "5630d47dd1ec0cdec223302e83b62860e1f572f5440336f207f93640847fe32b",
+      "verified_bytes": 1887232
     },
     {
       "repo": "pcm720/nhddl",

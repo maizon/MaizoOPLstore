@@ -54,5 +54,7 @@ hddchecker|HDD Checker|Diagnostico|Reparador de sistema de arquivos HDD|latest|1
 apollo|Apollo Save Tool|Ferramentas|Saves; pode REQUER arquivos de dados do pacote|v1.0.2|1523560|d7ae25e0a5eab85cab022c5c52cd6e853f21b50182f1a362809e6652dfa2a996
 cheatdevice|CheatDevice PS2|Ferramentas|Cheats; pode REQUER bancos de codigos externos|v1.7.5|512328|7e5cfc47c42e22956ef4bb8806f04a1affdce801a0242a9e0ee71b722560498a
 ps2doom|PS2 DOOM|Jogos|Port DOOM GPL. REQUER WAD legal nao incluido|nightly|401764|d3283e232ea03b681be25e5429dac1b20bd2263f87f0a2938d7d01f3c6e05b07
+quake-ps2|Quake PS2|Jogos|Engine open-source. REQUER arquivos PAK legais|v1.2.0|1411968|2cb9ef6b5d8e3d56a1e4ca5a5027d8a4f6cc8de12dc60bc12b5e5d900689e9b4
+quake2-ps2|Quake II PS2|Jogos|Engine GPL. REQUER arquivos PAK legais|v3.23|1887232|5630d47dd1ec0cdec223302e83b62860e1f572f5440336f207f93640847fe32b
 nhddl|NHDDL|Utilitarios|Launcher Neutrino; REQUER Neutrino instalado|v1.2.2|367700|64408e7089918d4d0c7ce6366ca2dc82357b446216b95215d54609284668451d
 neutrino|Neutrino|Utilitarios|Game loader EE; REQUER componentes e configuracao|latest|75252|b6a3e13e00ebc4257ad0c97a9106273f8c4cfafa42a63edc25d491cca596b626
