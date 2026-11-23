@@ -69,7 +69,7 @@ def main():
             '<a href="v1/apps/{id}.elf">Arquivo ELF</a> · '
             '<a href="{project}">Código-fonte</a></p></section>'.format(**entry))
     (ROOT / "v1" / "catalog").write_text("\n".join(catalog)+"\n", encoding="ascii")
-    (ROOT / "index.html").write_text(PAGE.format(rows="".join(cards)), encoding="utf-8")
+    (ROOT / "index.html").write_text(PAGE.replace("{rows}", "".join(cards)), encoding="utf-8")
     print(f"Static MAIZO Store ready: {len(CATALOG)} verified ELF downloads")
 
 
