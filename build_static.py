@@ -122,8 +122,8 @@ def unpack_release(archive, name, preferred, output):
     for chunk in chunks:
         data = dict(line.split(" = ", 1) for line in chunk.splitlines() if " = " in line)
         path = data.get("Path")
-        if path and path.lower().endswith(".elf") and
-                int(data.get("Size", "0")) <= MAX_ELF:
+        if (path and path.lower().endswith(".elf") and
+                int(data.get("Size", "0")) <= MAX_ELF):
             names.append(path)
     selected = choose_archive_elf(names, preferred)
     with subprocess.Popen(["7z", "e", "-so", str(archive), selected],
