@@ -96,7 +96,7 @@ def choose_archive_elf(names, preferred):
         if prefer:
             choices = prefer
     if len(choices) != 1:
-        raise ValueError("Archive contains %d ambiguous ELF files" % len(choices))
+        raise ValueError("Archive contains %d ambiguous ELFs: %s" % (len(choices), ",".join(choices)[:260]))
     return choices[0]
 
 
