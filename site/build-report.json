@@ -1,6 +1,15 @@
 {
-  "sources": 55,
-  "verified_mirror": 51,
+  "sources": 63,
+  "verified_mirror": 57,
   "external_only": 4,
-  "errors": []
+  "errors": [
+    [
+      "quake-ps2",
+      "Archive contains 2 ambiguous ELF files"
+    ],
+    [
+      "quake2-ps2",
+      "Archive contains 2 ambiguous ELF files"
+    ]
+  ]
 }
