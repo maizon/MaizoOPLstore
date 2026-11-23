@@ -1,24 +1,27 @@
-# MAIZO Store — hospedagem 100% gratuita no GitHub Pages
+# MAIZO Store — hospedagem gratuita, sem servidor próprio
 
-Esta loja funciona **sem servidor Python 24 horas, sem Railway, sem VPS,
-sem Raspberry Pi, sem domínio pago e sem computador ligado**.
+O servidor `server.py` fica disponível apenas para testes locais.
+O ambiente principal é um **repositório GitHub público e um CDN compartilhado
+gratuito (jsDelivr)**.
 
-A cada commit no main, a Action `Publish free MAIZO Store` obtém os ELF
-direto do GitHub Releases por HTTPS, exige hash SHA-256 e tamanho exatos,
-gera catálogo estático `v1/catalog`, e implanta arquivos `v1/apps/*.elf`
-no **GitHub Pages gratuito**. O publicador falha se um asset mudar no
-GitHub sem atualização explícita do catálogo e do hash.
+Após cada atualização de `main`, GitHub Actions:
+1. baixa arquivos .ELF oficiais do GitHub Releases sob HTTPS;
+2. exige tamanho e SHA-256 fixados em `server.py`;
+3. salva `site/v1/apps/<id>.elf` e `site/v1/catalog`;
+4. faz commit dos assets no próprio repositório.
 
-Endereço esperado após publicação:
-https://maizon.github.io/MaizoOPLstore/
+Acesso ao catálogo (não precisa ativar Pages):
+https://cdn.jsdelivr.net/gh/maizon/MaizoOPLstore@main/site/v1/catalog
 
-**Importante:** GitHub Pages utiliza HTTPS (TLS). O OPL original possui
-apenas cliente HTTP; é necessário atualizar o cliente PS2 com TLS para
-usar a loja *diretamente no console*. O frontend na web funciona sem
-esse requisito. Esta implementação gratuita substitui o serviço Python
-`server.py`, que fica apenas como opção para teste local.
+Interface pública:
+https://cdn.jsdelivr.net/gh/maizon/MaizoOPLstore@main/site/index.html
 
-Para atualizar um ELF, revise licenças e o asset oficial, atualize
-`server.py` e **o hash embutido no cliente PS2** simultaneamente.
-Nunca deixe o PS2 aceitar hashes recebidos do catálogo pela própria
-conexão de rede.
+Arquivos de aplicativos:
+https://cdn.jsdelivr.net/gh/maizon/MaizoOPLstore@main/site/v1/apps/fceumm.elf
+
+**Atenção:** jsDelivr é HTTPS; o PS2 precisa de cliente TLS no OPL.
+O catálogo retornado não é uma fonte de confiança: cada ELF DEVE ser
+validado pelo SHA-256 fixo dentro do MAIZO SUPREME. URLs `@main` podem
+ser armazenadas em cache pelo CDN, portanto novos assets podem demorar
+a propagar. Se um upstream atualizar seu `latest`, o build rejeitará
+o novo binário até que o catálogo seja revisado.
